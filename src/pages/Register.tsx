@@ -59,8 +59,11 @@ function Register() {
   };
 
   return (
-    <div>
-      <h1>Create your account</h1>
+    <div className="auth-card">
+      <div>
+        <h1>Create your account</h1>
+        <p className="subtitle">It takes less than a minute.</p>
+      </div>
       <form onSubmit={handleSubmit}>
         <FormInput label="Name" name="name" value={formData.name} onChange={handleChange} />
         <FormInput label="Surname" name="surname" value={formData.surname} onChange={handleChange} />

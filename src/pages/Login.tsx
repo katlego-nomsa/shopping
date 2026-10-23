@@ -6,6 +6,7 @@ import FormInput from "../components/FormInput";
 import { getUserByEmail } from "../utils/api";
 import { useAppDispatch } from "../store/hooks";
 import { loginUser } from "../store/userSlice";
+import { toSessionUser } from "../utils/user";
 
 function Login() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function Login() {
         return;
       }
 
-      dispatch(loginUser(user)); // save the user in Redux
+      dispatch(loginUser(toSessionUser(user))); // the password hash never enters the app state
       toast.success(`Welcome back, ${user.name}!`);
       navigate("/");
     } catch {
@@ -42,8 +43,11 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Log in</h1>
+    <div className="auth-card">
+      <div>
+        <h1>Welcome back</h1>
+        <p className="subtitle">Log in to see your shopping lists.</p>
+      </div>
       <form onSubmit={handleSubmit}>
         <FormInput label="Email" name="email" type="email" value={formData.email} onChange={handleChange} />
         <FormInput label="Password" name="password" type="password" value={formData.password} onChange={handleChange} />

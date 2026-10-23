@@ -1,32 +1,35 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { User } from "../types";
+import type { ShoppingList } from "../types";
 
-interface UserState {
-  currentUser: User | null;
+interface ListsState {
+  lists: ShoppingList[];
+  sharedLists: ShoppingList[];
 }
 
-// read the saved user so a refresh doesn't log them out
-const saved = localStorage.getItem("currentUser");
+const initialState: ListsState = { lists: [], sharedLists: [] };
 
-const initialState: UserState = {
-  currentUser: saved ? JSON.parse(saved) : null,
-};
-
-const userSlice = createSlice({
-  name: "user",
+const listsSlice = createSlice({
+  name: "lists",
   initialState,
   reducers: {
-    loginUser: (state, action: PayloadAction<User>) => {
-      state.currentUser = action.payload;
+    setLists: (state, action: PayloadAction<ShoppingList[]>) => {
+      state.lists = action.payload;
     },
-    logoutUser: (state) => {
-      state.currentUser = null;
+    setSharedLists: (state, action: PayloadAction<ShoppingList[]>) => {
+      state.sharedLists = action.payload;
     },
-    updateUser: (state, action: PayloadAction<User>) => {
-      state.currentUser = action.payload;
+    addList: (state, action: PayloadAction<ShoppingList>) => {
+      state.lists.push(action.payload);
+    },
+    updateList: (state, action: PayloadAction<ShoppingList>) => {
+      const index = state.lists.findIndex((l) => l.id === action.payload.id);
+      if (index !== -1) state.lists[index] = action.payload;
+    },
+    deleteList: (state, action: PayloadAction<number>) => {
+      state.lists = state.lists.filter((l) => l.id !== action.payload);
     },
   },
 });
 
-export const { loginUser, logoutUser, updateUser } = userSlice.actions;
-export default userSlice.reducer;
+export const { setLists, setSharedLists, addList, updateList, deleteList } = listsSlice.actions;
+export default listsSlice.reducer;
