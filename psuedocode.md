@@ -1,4 +1,5 @@
-2. Pseudocode
+ Pseudocode
+
 Register
 FUNCTION register(formData)
     IF any field is empty THEN show error and STOP
@@ -120,3 +121,52 @@ FUNCTION resetPassword(email, cellNumber, newPassword)
     SAVE bcrypt.hash(newPassword) as the user's password
     go to the Login page
 END FUNCTION
+
+
+Algorithm: search, sort and filter
+
+The search keyword, the sort choice and the category are kept in the URL, for example /?search=milk&sort=name&category=Dairy. The URL is the single source of truth, so a refresh, a bookmark or a typed URL always gives the same view.
+
+Input: all lists, search, sort, category Output: the lists to show
+
+FUNCTION prepareLists(lists, search, sort, category)
+    term = lowercase(trim(search))
+    isFiltering = (term is not empty) OR (category is not empty)
+
+    result = empty list
+    FOR EACH list IN lists
+        matching = items of the list WHERE
+                       lowercase(item.name) contains term
+                       AND (category is empty OR item.category equals category)
+
+        sorted = COPY of matching, ordered by:
+                     "name"     -> item name, A to Z
+                     "category" -> category A to Z, then name A to Z
+                     "date"     -> date added, newest first
+
+        IF NOT isFiltering OR sorted is not empty THEN
+            ADD a copy of the list with items = sorted TO result
+        END IF
+    END FOR
+
+    RETURN result
+END FUNCTION
+
+Reading the URL safely
+
+search   = URL "search" value, or "" if missing
+sort     = URL "sort" value IF it is name, category or date, ELSE "date"
+category = URL "category" value IF it is a real category, ELSE ""
+
+An invalid value such as ?sort=banana falls back to the default, so a bad URL never breaks the page.
+
+Why this design
+
+The lists in Redux are never changed, because every list and its items are copied before sorting. The original data stays complete, so editing while a filter is on does not lose hidden items.
+Running time: filtering is O(n) over all items and sorting is O(m log m) for the m items left in each list. This is fast for a personal shopping list.
+The result is recalculated only when the lists, search, sort or category change (useMemo).
+Password hashing
+SIGN UP:  storedHash = bcrypt.hash(password, 10 rounds)      // random salt included
+LOG IN:   isMatch    = bcrypt.compare(typedPassword, storedHash)
+
+A hash cannot be reversed, so the password is never "decrypted". At login the typed password is hashed with the salt from the stored hash and the results are compared.
