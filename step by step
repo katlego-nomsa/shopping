@@ -1,0 +1,23 @@
+Step-by-step plan
+Step	What I did	Done when
+1. Read the brief	Listed the pages, features and marking criteria	I had a checklist of every requirement
+2. Design	Made Login, Register, Home, Add item popup and Profile screens in Figma	All four pages and the popup were designed
+3. Set up	Created a Vite + React + TypeScript project and installed Redux Toolkit, React Router, bcryptjs, json-server and react-hot-toast	npm run dev and npm run server both ran
+4. Plan the state	Decided where each kind of data lives (see the table below)	Every piece of data had one home
+5. Types and store	Wrote the TypeScript types, userSlice, listsSlice and the store	The app loaded with no type errors
+6. Routing	Added public and protected routes with a shared layout	Logged-out users could not open Home or Profile
+7. Authentication	Built Register and Login with bcrypt hashing	db.json showed hashed passwords
+8. Shopping list CRUD	Built add, view, edit and delete for lists and items, with the Add item popup	Changes were saved to json-server and survived a refresh
+9. Search, sort and filter	Stored search, sort and category in the URL with useSearchParams	Editing the URL changed the page
+10. Profile	Built a view mode and an edit mode for personal and login details	Changes were saved and shown across the app
+11. Sharing	Let an owner share a list by email, shown read-only to the other user	The second user saw the list under "Shared with you"
+12. Extras	Added strong password rules, forgot password, a show/hide password eye and list renaming	Each one worked and was tested
+13. Styling	Applied the Figma design and made it responsive	Checked at 320, 480, 768 and 1024px
+14. Test	Walked through every feature, and fixed bugs	No errors in the Problems panel or the browser console
+15. Document and submit	Wrote the README and this document, then opened a pull request	Pull request sent to my mentor
+Where each kind of state lives
+Kind of state	Where it lives	Why
+Logged-in user	Redux (userSlice) and localStorage	Many components need it, and it must survive a refresh
+Shopping lists and shared lists	Redux (listsSlice), saved in json-server	Many components need them
+Search, sort and category	The URL	Shareable, bookmarkable, survives a refresh
+Form drafts, open popups, saving flags	useState	Only one component needs them
