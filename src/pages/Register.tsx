@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import toast from "react-hot-toast";
 import FormInput from "../components/FormInput";
 import { getUserByEmail, createUser } from "../utils/api";
+import PasswordStrength from "../components/PasswordStrength";
+import { isStrongPassword } from "../utils/password";
 
 function Register() {
   const navigate = useNavigate();
@@ -29,10 +31,10 @@ function Register() {
       toast.error("Please fill in all fields");
       return;
     }
-    if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters");
-      return;
-    }
+       if (!isStrongPassword(formData.password)) {
+     toast.error("Please choose a stronger password");
+     return;
+   }
     if (!/^\d{10}$/.test(formData.cellNumber)) {
       toast.error("Cell number must be 10 digits");
       return;
@@ -70,6 +72,7 @@ function Register() {
         <FormInput label="Cell number" name="cellNumber" type="tel" value={formData.cellNumber} onChange={handleChange} />
         <FormInput label="Email" name="email" type="email" value={formData.email} onChange={handleChange} />
         <FormInput label="Password" name="password" type="password" value={formData.password} onChange={handleChange} />
+           <PasswordStrength password={formData.password} showRulesWhenEmpty />
         <button type="submit">Register</button>
       </form>
       <p>

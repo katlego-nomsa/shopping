@@ -17,6 +17,7 @@ import type { ItemFormValues, ListItem, ShoppingList } from "../types";
 
 type ModalState =
   | { mode: "add" }
+  | { mode: "addToList"; list: ShoppingList }
   | { mode: "edit"; list: ShoppingList; item: ListItem }
   | null;
 
@@ -197,8 +198,12 @@ function Home() {
   };
 
   return (
-    <div>
+  <div className="page">
+    <div className="page-header">
+      <h1>My lists</h1>
       <button onClick={() => setModal({ mode: "add" })}>+ New list</button>
+    </div>
+
 
       <SearchSortBar
         search={search}
@@ -219,13 +224,14 @@ function Home() {
 
       {visibleLists.map((list) => (
         <ListCard
-          key={list.id}
-          list={list}
-          onEditItem={(item) => setModal({ mode: "edit", list, item })}
-          onDeleteItem={(item) => handleDeleteItem(list.id, item.id)}
-          onDeleteList={() => handleDeleteList(list)}
-          onShare={() => setSharingListId(list.id)}
-        />
+  key={list.id}
+  list={list}
+  onAddItem={() => setModal({ mode: "addToList", list })}
+  onEditItem={(item) => setModal({ mode: "edit", list, item })}
+  onDeleteItem={(item) => handleDeleteItem(list.id, item.id)}
+  onDeleteList={() => handleDeleteList(list)}
+  onShare={() => setSharingListId(list.id)}
+/>
       ))}
 
       {visibleShared.length > 0 && (
@@ -236,15 +242,23 @@ function Home() {
           ))}
         </>
       )}
-
-      {modal?.mode === "add" && (
-        <ItemModal
-          title="Add item"
-          initialValues={{ listName: "", name: "", quantity: 1, category: CATEGORIES[0], notes: "", image: "" }}
-          onSubmit={handleAdd}
-          onClose={() => setModal(null)}
-        />
-      )}
+{modal?.mode === "add" && (
+  <ItemModal
+    title="Add item"
+    initialValues={{ listName: "", name: "", quantity: 1, category: CATEGORIES[0], notes: "", image: "" }}
+    onSubmit={handleAdd}
+    onClose={() => setModal(null)}
+  />
+)}
+      {modal?.mode === "addToList" && (
+  <ItemModal
+    title={`Add item to ${modal.list.name}`}
+    lockListName
+    initialValues={{ listName: modal.list.name, name: "", quantity: 1, category: CATEGORIES[0], notes: "", image: "" }}
+    onSubmit={handleAdd}
+    onClose={() => setModal(null)}
+  />
+)}
 
       {modal?.mode === "edit" && (
         <ItemModal

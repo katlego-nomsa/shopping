@@ -1,3 +1,5 @@
+export const CATEGORIES = ["Produce", "Dairy", "Bakery", "Meat", "Other"];
+
 export const SORT_OPTIONS = [
   { value: "name", label: "Name" },
   { value: "category", label: "Category" },

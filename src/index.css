@@ -284,3 +284,154 @@ input[type="file"] { padding: 8px; }
 @media (min-width: 1024px) {
   .page { padding: 8px 48px 48px; }
 }
+
+/* ---------- profile view and edit mode ---------- */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+}
+.details-list div {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.details-list div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.details-list dt {
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.details-list dd {
+  margin: 0;
+  font-size: 17px;
+  word-break: break-word;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.form-actions button {
+  flex: 1;
+}
+
+/* white secondary button (Edit, Cancel) */
+button.secondary {
+  background: #fff;
+  color: var(--ink);
+}
+button.secondary:hover {
+  background: var(--lime);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 16px 32px;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .page { padding: 8px 32px 32px; }
+}
+
+@media (min-width: 1024px) {
+  .page { padding: 8px 48px 48px; }
+}
+/* ---------- show/hide password ---------- */
+.input-wrapper {
+  position: relative;
+}
+
+input.has-toggle {
+  padding-right: 52px; /* keep the text away from the eye */
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.password-toggle:hover {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+/* hide the browser's own eye so there aren't two */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+/* ---------- password strength ---------- */
+.strength {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.strength-bar {
+  height: 8px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 99px;
+  background: #fff;
+}
+.strength-fill {
+  height: 100%;
+  transition: width 0.2s;
+}
+.strength-weak { background: #e5484d; }
+.strength-medium { background: #f5a524; }
+.strength-strong { background: #2f9e44; }
+.strength-label { font-size: 13px; }
+.strength-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+.rule-ok { color: #1a6b2f; font-weight: 600; }
+.rule-missing { color: var(--muted); }
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

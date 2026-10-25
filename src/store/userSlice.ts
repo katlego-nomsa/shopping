@@ -1,35 +1,40 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { ShoppingList } from "../types";
+import type { SessionUser } from "../types";
 
-interface ListsState {
-  lists: ShoppingList[];
-  sharedLists: ShoppingList[];
+interface UserState {
+  currentUser: SessionUser | null;
 }
 
-const initialState: ListsState = { lists: [], sharedLists: [] };
+// read the saved user so a refresh doesn't log them out
+function loadSavedUser(): SessionUser | null {
+  try {
+    const saved = localStorage.getItem("currentUser");
+    if (!saved) return null;
+    const u = JSON.parse(saved);
+    // copy only the safe fields, which also cleans out old saves that held a password
+    return { id: u.id, email: u.email, name: u.name, surname: u.surname, cellNumber: u.cellNumber };
+  } catch {
+    return null;
+  }
+}
 
-const listsSlice = createSlice({
-  name: "lists",
+const initialState: UserState = { currentUser: loadSavedUser() };
+
+const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
-    setLists: (state, action: PayloadAction<ShoppingList[]>) => {
-      state.lists = action.payload;
+    loginUser: (state, action: PayloadAction<SessionUser>) => {
+      state.currentUser = action.payload;
     },
-    setSharedLists: (state, action: PayloadAction<ShoppingList[]>) => {
-      state.sharedLists = action.payload;
+    logoutUser: (state) => {
+      state.currentUser = null;
     },
-    addList: (state, action: PayloadAction<ShoppingList>) => {
-      state.lists.push(action.payload);
-    },
-    updateList: (state, action: PayloadAction<ShoppingList>) => {
-      const index = state.lists.findIndex((l) => l.id === action.payload.id);
-      if (index !== -1) state.lists[index] = action.payload;
-    },
-    deleteList: (state, action: PayloadAction<number>) => {
-      state.lists = state.lists.filter((l) => l.id !== action.payload);
+    updateUser: (state, action: PayloadAction<SessionUser>) => {
+      state.currentUser = action.payload;
     },
   },
 });
 
-export const { setLists, setSharedLists, addList, updateList, deleteList } = listsSlice.actions;
-export default listsSlice.reducer;
+export const { loginUser, logoutUser, updateUser } = userSlice.actions;
+export default userSlice.reducer;

@@ -54,6 +54,9 @@ function Login() {
         <button type="submit">Log in</button>
       </form>
       <p>
+  <Link to="/forgot-password">Forgot password?</Link>
+</p>
+      <p>
         New here? <Link to="/register">Register</Link>
       </p>
     </div>
