@@ -1,6 +1,6 @@
 import type { User, ShoppingList } from "../types";
 
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
 
 // find a user by email (returns null if none exists)
 export async function getUserByEmail(email: string): Promise<User | null> {

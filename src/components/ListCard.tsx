@@ -22,6 +22,7 @@ function ListCard({ list, readOnly = false, onAddItem, onEditItem, onDeleteItem,
             <button onClick={onAddItem}>+ Add item</button>
             <button onClick={onShare}>Share</button>
             <button onClick={onDeleteList}>Delete list</button>
+            
           </div>
         )}
       </div>
